@@ -35,17 +35,20 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const tweetRouter = require('./routes/tweet');
 const commentRouter = require('./routes/comment');
+const notificationRouter = require('./routes/notification');
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/tweets', tweetRouter);
 app.use('/api/comments', commentRouter);
+app.use('/api/notifications', notificationRouter);
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => console.log(`server listening on port ${PORT}`));
 
 const User = require('./models/User');
 const UserDetail = require('./models/User_Detail');
+const Notification = require('./models/Notification');
 io.on('connection', (socket) => {
   console.log('New user connected');
   console.log(socket.id);
@@ -87,6 +90,40 @@ io.on('connection', (socket) => {
         io.to(u.socket_id).emit('new_tweet', { tweet });
       }
     });
+  });
+
+  socket.on('add_nof', async ({ type, tweet_id, sender, receiver }) => {
+    const user_sender = await User.findById(sender, '_id display_name photo');
+    let user_receiver = await User.findById(
+      receiver,
+      '_id is_online socket_id'
+    );
+
+    let newNotification = new Notification({
+      sender,
+      tweet: tweet_id,
+      type,
+      receiver,
+    });
+    newNotification = await newNotification.save();
+    if (user_receiver.notifications_count) {
+      user_receiver.notifications_count++;
+    } else {
+      user_receiver.notifications_count = 1;
+    }
+    await user_receiver.save();
+    if (user_receiver.is_online) {
+      newNotification = {
+        ...newNotification._doc,
+        sender: {
+          _id: user_sender._id,
+          display_name: user_sender.display_name,
+          photo: user_sender.photo,
+        },
+      };
+      console.log(newNotification);
+      socket.to(user_receiver.socket_id).emit('add_nof', { newNotification });
+    }
   });
 
   socket.on('disconnect', async () => {
