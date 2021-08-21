@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
     origin: [
+      'https://heuristic-brahmagupta-807e2b.netlify.app',
       'http://localhost:3000',
-      'https://romantic-jones-05f510.netlify.app',
     ],
     credentials: true,
   })
