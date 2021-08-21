@@ -549,7 +549,7 @@ router.get('/', async (req, res) => {
       .populate({
         path: 'user',
         model: User,
-        select: '_id display_name photo',
+        select: '_id display_name photo is_online socket_id',
       })
       .sort({ createdAt: -1 })
       .skip(skip)

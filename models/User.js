@@ -45,6 +45,11 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+    is_online: {
+      type: Boolean,
+      default: false,
+    },
+    socket_id: String,
   },
   {
     timestamps: true,

@@ -33,7 +33,7 @@ router.get('/tweetAction/:tweet_id', async (req, res) => {
         ).populate({
           path: 'user',
           model: User,
-          select: '_id followers_count display_name photo bio',
+          select: '_id followers_count display_name photo bio is_online',
           options: {
             sort: { followers_count: -1, createdAt: -1 },
             limit,
@@ -53,7 +53,7 @@ router.get('/tweetAction/:tweet_id', async (req, res) => {
         ).populate({
           path: 'user',
           model: User,
-          select: '_id followers_count display_name photo bio',
+          select: '_id followers_count display_name photo bio is_online',
           options: {
             sort: { followers_count: -1, createdAt: -1 },
             limit,
@@ -73,7 +73,7 @@ router.get('/tweetAction/:tweet_id', async (req, res) => {
         ).populate({
           path: 'user',
           model: User,
-          select: '_id followers_count display_name photo bio',
+          select: '_id followers_count display_name photo bio is_online',
           options: {
             sort: { followers_count: -1, createdAt: -1 },
             limit,
@@ -138,7 +138,7 @@ router.get('/follow/:id', async (req, res) => {
               : user_detail.followers,
         },
       },
-      '_id followers_count display_name photo bio'
+      '_id followers_count display_name photo bio is_online'
     )
       .sort({ followers_count: -1, createdAt: -1 })
       .skip(skip)
@@ -184,7 +184,7 @@ router.get('/recommendFollow', async (req, res) => {
           $nin: [...user_detail.following, user._id],
         },
       },
-      '_id display_name followers_count photo coverPhoto bio'
+      '_id display_name is_online followers_count photo coverPhoto bio'
     )
       .sort({ followers_count: -1, createdAt: -1 })
       .limit(10);
@@ -220,7 +220,7 @@ router.get('/search', async (req, res) => {
           $regex: new RegExp(q, 'i'),
         },
       },
-      '_id followers_count display_name photo bio'
+      '_id followers_count display_name photo bio is_online'
     )
       .sort({ followers_count: -1, createdAt: -1 })
       .skip(skip)
