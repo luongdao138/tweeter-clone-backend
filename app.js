@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: ['https://tender-banach-9ccbfb.netlify.app/'],
+    origin: ['https://tender-banach-9ccbfb.netlify.app'],
     credentials: true,
   })
 );
