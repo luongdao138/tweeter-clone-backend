@@ -9,10 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: [
-      'https://heuristic-brahmagupta-807e2b.netlify.app',
-      'http://localhost:3000',
-    ],
+    origin: ['https://tender-banach-9ccbfb.netlify.app/'],
     credentials: true,
   })
 );
