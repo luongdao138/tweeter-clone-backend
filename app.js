@@ -96,7 +96,7 @@ io.on('connection', (socket) => {
     const user_sender = await User.findById(sender, '_id display_name photo');
     let user_receiver = await User.findById(
       receiver,
-      '_id is_online socket_id'
+      '_id is_online socket_id notifications_count'
     );
 
     let newNotification = new Notification({
